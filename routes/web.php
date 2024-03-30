@@ -1,33 +1,27 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\HRController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-//Auth routes
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::middleware(['auth'])->group(function () {
-    Route::middleware(['role:admin'])->group(function () {
-        // Admin routes
-        Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-    });
-
-    Route::middleware(['role:hr'])->group(function () {
-        // HR routes
-        Route::get('/hr/dashboard', [HRController::class, 'dashboard']);
-    });
-
-    Route::middleware(['role:user'])->group(function () {
-        // User routes
-        Route::get('/user/dashboard', [UserController::class, 'dashboard']);
-    });
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
