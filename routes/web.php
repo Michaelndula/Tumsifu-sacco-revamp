@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ForbiddenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\CheckRole;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -34,12 +36,14 @@ Route::get('/admin/dashboard', [AdminController::class, 'index'])
     ->name('admin.dashboard');
 
 Route::get('/user/dashboard', [UserController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified',])
     ->name('user.dashboard');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/forbidden', [ForbiddenController::class, 'index'])->name('forbidden');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

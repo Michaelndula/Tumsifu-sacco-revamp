@@ -11,6 +11,13 @@ class StaffController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboards/Staff/Dashboard');
+        $user = Auth::user();
+
+        if ($user->role === 'staff') {
+            return Inertia::render('Dashboards/Staff/Dashboard');
+        } else {
+            // Handle unauthorized access
+            return Inertia::render('Auth/ForbiddenAccess');
+        }
     }
 }

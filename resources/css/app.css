@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css?family=Lato');
 
 .logo {
     width: 100%;
@@ -15,3 +16,4 @@
 .primary-button {
     background: #57a89a;
 }
+
