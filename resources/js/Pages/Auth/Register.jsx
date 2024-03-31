@@ -49,7 +49,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="gmail" value="Gmail" />
+                    <InputLabel htmlFor="gmail" value="Email" />
 
                     <TextInput
                         id="email"

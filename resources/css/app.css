@@ -6,3 +6,12 @@
     width: 100%;
     height: 200px;
 }
+
+.login-register {
+    background: #57a89a;
+    margin-bottom: 20px;
+}
+
+.primary-button {
+    background: #57a89a;
+}
