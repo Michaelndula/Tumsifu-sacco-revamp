@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +22,20 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+//Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+
+Route::get('/staff/dashboard', [StaffController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('staff.dashboard');
+
+Route::get('/admin/dashboard', [AdminController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.dashboard');
+
+Route::get('/user/dashboard', [UserController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('user.dashboard');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Gate;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,7 +34,22 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        if ($user && Gate::allows('access-dashboard', $user)) {
+            // User is authenticated and authorized to access the dashboard based on their role
+            if ($user->role === 'staff') {
+                return redirect()->route('staff.dashboard');
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'user') {
+                return redirect()->route('user.dashboard');
+            }
+        }
+    
+        // If the user is not authorized, redirect them back
+        return redirect()->back()->with('error', 'Unauthorized access.');
+
     }
 
     /**
