@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
-    //
-    public function dashboard(){
-        return view('dashboards.admin.index');
-
+    public function index()
+    {
+        return Inertia::render('Dashboards/Admin/Dashboard');
     }
 }

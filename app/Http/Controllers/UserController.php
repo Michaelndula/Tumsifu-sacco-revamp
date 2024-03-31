@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function dashboard(){
-        return view('dashboards.user.index');
+    public function index()
+    {
+        return Inertia::render('Dashboards/User/Dashboard');
     }
 }
