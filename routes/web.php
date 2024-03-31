@@ -24,24 +24,21 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-//Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard')->name('dashboard');
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/staff/dashboard', [StaffController::class, 'index'])
+        ->middleware('can:access-dashboard,staff')
+        ->name('staff.dashboard');
 
-Route::get('/staff/dashboard', [StaffController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('staff.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])
+        ->middleware('can:access-dashboard,admin')
+        ->name('admin.dashboard');
 
-Route::get('/admin/dashboard', [AdminController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('admin.dashboard');
-
-Route::get('/user/dashboard', [UserController::class, 'index'])
-    ->middleware(['auth', 'verified',])
-    ->name('user.dashboard');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/user/dashboard', [UserController::class, 'index'])
+        ->middleware('can:access-dashboard,user')
+        ->name('user.dashboard');
+});
 
 Route::get('/forbidden', [ForbiddenController::class, 'index'])->name('forbidden');
 
